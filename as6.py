@@ -143,26 +143,27 @@ def doServiceTest():
 		print("Invalid target!")
 		return
 		
-	portNames = {}
-	portNames["SMTP"] = (25, 587, 465)
-	portNames["SSH"] = (22)
-	portNames["HTTP"] = (80)
-	portNames["HTTPS"] = (443)
-	portNames["SNMP"] = (161, 162)
-	portNames["DNS"] = (53)
-	portNames["FTP"] = (20, 21)
-	portNames["LDAP"] = (389)
-	portNames["RPC"] = (135)
+	dict = {}
+	dict["SMTP"] = [25, 587, 465]
+	dict["SSH"] = [22]
+	dict["HTTP"] = [80]
+	dict["HTTPS"] = [443]
+	dict["SNMP"] = [161, 162]
+	dict["DNS"] = [53]
+	dict["FTP"] = [20, 21]
+	dict["LDAP"] = [389]
+	dict["RPC"] = [135]
 
 	service = input("Enter the service to test: ").upper()
-	
-	sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	sock.settimeout(2)
-	result = sock.connect_ex((name, portNames[service]))
-	if result == 0:
-		print("The service", service, "on port", portNames[service], "is available")
-	else:
-		print("The service", service, "on port", portNames[service], "is NOT available (code", str(result) + ")")
+
+	for port in dict[service]:	
+		sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+		sock.settimeout(2)
+		result = sock.connect_ex((name, port))
+		if result == 0:
+			print("The service", service, "on port", port, "is available")
+		else:
+			print("The service", service, "on port", port, "is NOT available (code", str(result) + ")")
 
 		
 
