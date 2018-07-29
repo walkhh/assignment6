@@ -10,6 +10,27 @@ import platform
 
 
 # Used to validate the format of IPv4 addresses
+def isOpen(ip,port):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    try:
+        s.connect((ip,int(port)))
+        s.shutdown(2)
+        return True
+    except:
+        return False
+
+def checkprotocols():
+    ip = input("Enter a ip address: ")
+    print(ip + " is available for HTTP connection: "+ str(isOpen(ip, 80)))
+    print(ip + " is available for SMTP connection: "+ str(isOpen(ip, 25) | isOpen(ip,587) | isOpen(ip,465) ))
+    print(ip + " is available for SSH connection: "+ str(isOpen(ip, 22)))
+    print(ip + " is available for SNMP connection: "+ str(isOpen(ip, 161) | isOpen(ip,162) ))
+    print(ip + " is available for FTP connection: "+ str(isOpen(ip, 20) | isOpen(ip,21)))
+    print(ip + " is available for HTTPS connection: "+ str(isOpen(ip, 443)))
+    print(ip + " is available for DNS connection: "+ str(isOpen(ip, 53)))
+    print(ip + " is available for LDAP connection: "+ str(isOpen(ip, 389)))
+    print(ip + " is available for RPC connection: "+ str(isOpen(ip, 135)))
+
 def isIPv4(str):
     pattern = r'([0-9]{1,3}\.){3}[0-9]{1,3}'
     return re.match(pattern, str)
@@ -151,6 +172,7 @@ def __main__():
         print("\t" + "3. Get a FQDN from an IP")
         print("\t" + "4. Ping a server")
         print("\t" + "5. trace route to target")
+        print("\t" + "6, check connectioin protocols")
         num = input("Please enter a command number: ")
         print("\n")
 
@@ -167,6 +189,8 @@ def __main__():
             doPing()
         elif num == "5":
             doTraceRoute()
+        elif num == "6":
+            checkprotocols()
         else:
             print("Invalid option.")
 
