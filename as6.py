@@ -10,27 +10,6 @@ import platform
 
 
 # Used to validate the format of IPv4 addresses
-def isOpen(ip,port):
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    try:
-        s.connect((ip,int(port)))
-        s.shutdown(2)
-        return True
-    except:
-        return False
-
-def checkprotocols():
-    ip = input("Enter a ip address: ")
-    print(ip + " is available for HTTP connection: "+ str(isOpen(ip, 80)))
-    print(ip + " is available for SMTP connection: "+ str(isOpen(ip, 25) | isOpen(ip,587) | isOpen(ip,465) ))
-    print(ip + " is available for SSH connection: "+ str(isOpen(ip, 22)))
-    print(ip + " is available for SNMP connection: "+ str(isOpen(ip, 161) | isOpen(ip,162) ))
-    print(ip + " is available for FTP connection: "+ str(isOpen(ip, 20) | isOpen(ip,21)))
-    print(ip + " is available for HTTPS connection: "+ str(isOpen(ip, 443)))
-    print(ip + " is available for DNS connection: "+ str(isOpen(ip, 53)))
-    print(ip + " is available for LDAP connection: "+ str(isOpen(ip, 389)))
-    print(ip + " is available for RPC connection: "+ str(isOpen(ip, 135)))
-
 def isIPv4(str):
 	pattern = r'([0-9]{1,3}\.){3}[0-9]{1,3}'
 	return re.match(pattern, str)
@@ -177,59 +156,22 @@ def doServiceTest():
 
 	service = input("Enter the service to test: ").upper()
 
-	for port in dict[service]:	
-		sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-		sock.settimeout(2)
-		result = sock.connect_ex((name, port))
-		if result == 0:
-			print("The service", service, "on port", port, "is available")
-		else:
-			print("The service", service, "on port", port, "is NOT available (code", str(result) + ")")
+	if service in dict:
+		for port in dict[service]:	
+			sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+			sock.settimeout(2)
+			result = sock.connect_ex((name, port))
+			if result == 0:
+				print("The service", service, "on port", port, "is available")
+			else:
+				print("The service", service, "on port", port, "is NOT available (code", str(result) + ")")
+	else:
+		print("Invalid service name.")
 
 		
 
 # The main method containing the shell ui
 def __main__():
-<<<<<<< HEAD
-    # Identify the host os
-    print("\nNote: This program supports Linux and Windows.\nCurrent host OS: " +
-            str(platform.system()))
-    # Assuming linux if not windows
-    if os.name != 'nt': 
-        print("\nSince you're not running windows 'traceroute' and 'ifconfig' are required " +
-            "for execution of this program.\nTo do this, run the commands: "+
-            "'sudo apt install net-tools' and 'sudo apt install traceroute' in your terminal.\n")
-
-    # Begin program execution
-    while True:
-        print("\n\t" + "0. Exit")
-        print("\t" + "1. Show machine's IPv4, IPv6, and subnet information.")
-        print("\t" + "2. Get an IP from a FQDN")
-        print("\t" + "3. Get a FQDN from an IP")
-        print("\t" + "4. Ping a server")
-        print("\t" + "5. trace route to target")
-        print("\t" + "6, check connectioin protocols")
-        num = input("Please enter a command number: ")
-        print("\n")
-
-        if num == "0":
-            print("Goodbye. The results can now be copied to a text editor and printed.")
-            quit()
-        elif num == "1":
-            showInfo()
-        elif num == "2":
-            fqdnToIp()
-        elif num == "3":
-            ipToFqdn()
-        elif num == "4":
-            doPing()
-        elif num == "5":
-            doTraceRoute()
-        elif num == "6":
-            checkprotocols()
-        else:
-            print("Invalid option.")
-=======
 	# Identify the host os
 	print("\nNote: This program supports Linux and Windows.\nCurrent host OS: " +
 			str(platform.system()))
@@ -268,7 +210,6 @@ def __main__():
 			doServiceTest()
 		else:
 			print("Invalid option.")
->>>>>>> 9608f9c13aad4e70c13f617bef556572b1409a1a
 
 
 __main__()
