@@ -143,6 +143,7 @@ def doServiceTest():
 		print("Invalid target!")
 		return
 		
+	# maps service name to an array of ports
 	dict = {}
 	dict["SMTP"] = [25, 587, 465]
 	dict["SSH"] = [22]
@@ -154,8 +155,9 @@ def doServiceTest():
 	dict["LDAP"] = [389]
 	dict["RPC"] = [135]
 
-	service = input("Enter the service to test: ").upper()
+	service = input("Enter a service to test (SMTP, SSH, HTTP, HTTPS, SNMP, DNS, FTP, LDAP or RPC): ").upper()
 
+	# tests all ports associated with service
 	if service in dict:
 		for port in dict[service]:	
 			sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
